@@ -58,6 +58,7 @@ add as=65000 disabled=no hold-time=4m input.filter=bgp_in_wg \
 **Импорт сертификат DigiCert Global Root CA в хранилище сертификатов роутера:**  
 /tool fetch url=https://cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem  
 /certificate import file-name=DigiCertGlobalRootCA.crt.pem passphrase=""  
+
 **Указать использование DoH Server. В поле Cache Size лучше поставить значение 4096**  
 /ip dns set allow-remote-requests=yes cache-size=4096KiB use-doh-server=https://1.1.1.1/dns-query verify-doh-cert=yes  
 
