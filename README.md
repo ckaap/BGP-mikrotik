@@ -1,6 +1,8 @@
 # BGP-mikrotik + DOH
 **Настройка BGP для обхода блокировок  
-Ориентироваться можно на инструкцию https://habr.com/ru/post/549282/  
+Ориентироваться можно на инструкцию  
+https://habr.com/ru/post/549282/  
+https://xn----7sba7aachdbqfnhtigrl.xn--j1amh/mikrotik-doh-nastrojka-dns-over-https/  
 Нужен VPS с wireguard  
 Настраиваем интерфейс и Peer**  
 
