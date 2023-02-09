@@ -24,7 +24,6 @@ https://antifilter.download/
 
 **#Добавляем правило для NAT - masquerade трафика из Сети WAN и wireguard1**  
 /ip firewall nat add action=masquerade chain=srcnat out-interface-list=WAN  
-/ip firewall nat add action=masquerade chain=srcnat disabled=yes out-interface=wireguard1  
 
 **#Добавляем маршрут для проброса BGP через wireguard1**  
 /ip route add dst-address=45.154.73.71/32 gateway=wireguard1  
