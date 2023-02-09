@@ -3,6 +3,7 @@
 Ориентироваться можно на инструкцию  
 https://habr.com/ru/post/549282/  
 https://xn----7sba7aachdbqfnhtigrl.xn--j1amh/mikrotik-doh-nastrojka-dns-over-https/  
+https://antifilter.download/  
 Нужен VPS с wireguard  
 Настраиваем интерфейс и Peer**  
 
@@ -13,7 +14,7 @@ https://xn----7sba7aachdbqfnhtigrl.xn--j1amh/mikrotik-doh-nastrojka-dns-over-htt
 /interface wireguard peers add allowed-address=0.0.0.0/0 endpoint-address=******** endpoint-port=50954 interface=wireguard1 public-key="***********"  
 
 **#Добавляем адрес для подключения к wireguard из конфига**  
-/ip address add address=10.66.66.25/24 interface=wireguard1 network=10.66.66.0  
+/ip address add address=10.11.11.25/24 interface=wireguard1 network=10.11.11.0  
 
 **#Добавляем wireguard1 в интерфейсы WAN**  
 /interface list member add interface=wireguard1 list=WAN  
@@ -37,16 +38,16 @@ https://xn----7sba7aachdbqfnhtigrl.xn--j1amh/mikrotik-doh-nastrojka-dns-over-htt
 **#Также вам необходимо понизить приоритет стандартного DHCP клиента и изменить значение поля Add Default Route на Special Classless, значение поля Default Route Distance = 2 во вкладке Advanced. use-peer-dns=no необходимо для последующей настройки DOH**  
 /ip dhcp-client add interface=ether1 use-peer-dns=no  
 
-**#Добавляем шаблон для BGP туннеля. 64988 берётся случайно как идентификатор сети.**
-/routing bgp template add as=64988 disabled=no hold-time=4m input.filter=bgp_in_wg ignore-as-path-len=yes keepalive-time=1s multihop=yes name=antifilter_wg routing-table=main  
+**#Добавляем шаблон для BGP туннеля. 65000 берётся случайно как идентификатор сети. Диапазон **
+/routing bgp template add as=65000 disabled=no hold-time=4m input.filter=bgp_in_wg ignore-as-path-len=yes keepalive-time=1s multihop=yes name=antifilter_wg routing-table=main  
 
 **#Добавляем фильтр для BGP туннеля. В правиле указываем "set gw-interface wireguard1;accept"**  
 /routing filter rule add chain=bgp_in_wg disabled=no rule="set gw-interface wireguard1;accept"  
 
 **#Добавляем BGP туннель.  
-45.154.73.71/32 - Адрес сервера со списком маршрутов, берётся в гугле. 65432 - Идентификатор сети BGP, используется так же из инструкции на сайте из шапки. 64988 - Индентификатор нашего подключения, указывали выше в шаблоне. router-id= Внешний адрес маршрутизатора для регистрации в сети, можно использовать любой, но возможны петли.**  
+45.154.73.71/32 - Адрес сервера со списком маршрутов, берётся в гугле. 61432 - Идентификатор сети BGP, используется так же из инструкции на сайте из шапки. 65000 - Индентификатор нашего подключения, указывали выше в шаблоне. router-id= Внешний адрес маршрутизатора для регистрации в сети, можно использовать любой, но возможны петли.**  
 /routing bgp connection  
-add as=64988 disabled=no hold-time=4m input.filter=bgp_in_wg \  
+add as=65000 disabled=no hold-time=4m input.filter=bgp_in_wg \  
     .ignore-as-path-len=yes keepalive-time=1s local.address=//АДРЕС НАШЕГО ВПН// \  
     .role=ebgp multihop=yes name=bgp_wg remote.address=45.154.73.71/32 .as=\  
     65432 router-id=//ВНЕШНИЙ АДРЕС МАРШРУТИЗАТОРА// routing-table=main templates=antifilter_wg  
