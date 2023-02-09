@@ -5,7 +5,13 @@ https://habr.com/ru/post/549282/
 https://xn----7sba7aachdbqfnhtigrl.xn--j1amh/mikrotik-doh-nastrojka-dns-over-https/  
 https://antifilter.download/  
 Нужен VPS с wireguard  
-Настраиваем интерфейс и Peer**  
+# Быстрый способ установки - использовать скрипт.  
+curl -O https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh  
+chmod +x wireguard-install.sh  
+./wireguard-install.sh  
+
+
+#После успешной установки настраиваем интерфейс и Peer на mikrotik**  
 
 **#Добавляем интерфейс wireguard**  
 /interface wireguard add listen-port=50954 mtu=1420 name=wireguard1  
