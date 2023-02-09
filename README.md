@@ -7,7 +7,7 @@ https://antifilter.download/
 Нужен VPS с wireguard  
 Настраиваем интерфейс и Peer**  
 
-**#Добавляем интерфейс wireguard** 
+**#Добавляем интерфейс wireguard**  
 /interface wireguard add listen-port=50954 mtu=1420 name=wireguard1  
 
 **#Добавляем Peer**  
