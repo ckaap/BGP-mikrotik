@@ -1,11 +1,11 @@
 # Antifilter BGP-mikrotik + DOH  
 **Настройка BGP для обхода блокировок  
-Ориентироваться можно на инструкцию  
+Ориентироваться можно на инструкцию**  
 https://habr.com/ru/post/549282/  
 https://xn----7sba7aachdbqfnhtigrl.xn--j1amh/mikrotik-doh-nastrojka-dns-over-https/  
 https://antifilter.download/  
-Нужен VPS с wireguard  
-# Быстрый способ установки - использовать скрипт.  
+ 
+# Для работы необходим wireguard или другой VPN. Быстрый способ установки - использовать скрипт.  
 curl -O https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh  
 chmod +x wireguard-install.sh  
 ./wireguard-install.sh  
