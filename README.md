@@ -11,7 +11,7 @@ chmod +x wireguard-install.sh
 ./wireguard-install.sh  
 
 
-# После успешной установки настраиваем интерфейс и Peer на mikrotik**  
+# После успешной установки настраиваем интерфейс и Peer на mikrotik  
 
 **#Добавляем интерфейс wireguard**  
 /interface wireguard add listen-port=50954 mtu=1420 name=wireguard1  
