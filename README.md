@@ -34,9 +34,6 @@ https://antifilter.download/
 **#Добавляем mangle для маркировки пакетов ручной маршрутизации адресов**  
 /ip firewall mangle add action=mark-routing chain=prerouting dst-address-list=wg_list new-routing-mark=wg_mark  
 
-**#Также вам необходимо понизить приоритет стандартного DHCP клиента и изменить значение поля Add Default Route на Special Classless, значение поля Default Route Distance = 2 во вкладке Advanced. use-peer-dns=no необходимо для последующей настройки DOH**  
-/ip dhcp-client add interface=ether1 use-peer-dns=no  
-
 **#Добавляем шаблон для BGP туннеля. 65000 берётся случайно как идентификатор сети. Диапазон **
 /routing bgp template add as=65000 disabled=no hold-time=4m input.filter=bgp_in_wg ignore-as-path-len=yes keepalive-time=1s multihop=yes name=antifilter_wg routing-table=main  
 
