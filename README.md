@@ -34,7 +34,7 @@ https://antifilter.download/
 **#Добавляем mangle для маркировки пакетов ручной маршрутизации адресов**  
 /ip firewall mangle add action=mark-routing chain=prerouting dst-address-list=wg_list new-routing-mark=wg_mark  
 
-**#Добавляем шаблон для BGP туннеля. 65000 берётся случайно как идентификатор сети. Диапазон **
+**#Добавляем шаблон для BGP туннеля. 65000 берётся случайно как идентификатор сети.**
 /routing bgp template add as=65000 disabled=no hold-time=4m input.filter=bgp_in_wg ignore-as-path-len=yes keepalive-time=1s multihop=yes name=antifilter_wg routing-table=main  
 
 **#Добавляем фильтр для BGP туннеля. В правиле указываем "set gw-interface wireguard1;accept"**  
