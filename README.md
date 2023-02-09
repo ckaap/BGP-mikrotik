@@ -19,8 +19,9 @@ https://antifilter.download/
 **#Добавляем wireguard1 в интерфейсы WAN**  
 /interface list member add interface=wireguard1 list=WAN  
 
-**#Добавляем таблицу маршрутизации для ручной маркировки трафика. Будет необходима позднее, если какие-то сайты будут попадать по ошибке не в те маршруты. Списки маршрутов идут с маской 20-24, могут быть редкие ошибки.**  
+**#Добавляем таблицу маршрутизации для ручной маркировки трафика. Будет необходима позднее, если какие-то сайты будут попадать по ошибке не в те маршруты. Списки маршрутов идут с маской 20-24, могут быть редкие ошибки. В adress lists можно руками добавлять сайты (доменами, но домен через * не работает, только полные доменные имена) и выбирать таблицу маршрутизации, RT или wg_mark. Через RT выход будет через интерфейс провайдера, через wg_mark - через wireguard1.**  
 /routing table add disabled=no fib name=wg_mark  
+/routing table add disabled=no fib name=RT  
 
 **#Добавляем правило для NAT - masquerade трафика из Сети WAN и wireguard1**  
 /ip firewall nat add action=masquerade chain=srcnat out-interface-list=WAN  
@@ -28,11 +29,13 @@ https://antifilter.download/
 **#Добавляем маршрут для проброса BGP через wireguard1**  
 /ip route add dst-address=45.154.73.71/32 gateway=wireguard1  
 
-**#Добавляем маршрут для точечной маршрутизации адресов по списку**  
-/ip route add dst-address=0.0.0.0/0 gateway=wireguard1  
+**#Добавляем маршрут для точечной маршрутизации адресов по списку. Первый маршрут будет отправлять адреса из адрес листа с маркировкой wg_mark через wireguard, а второй для маркировки RT через провайдера.**  
+/ip route add comment=WG disabled=no distance=1 dst-address=0.0.0.0/0 gateway=wireguard1 pref-src="" routing-table=wg_mark scope=30 suppress-hw-offload=no target-scope=10  
+/ip route add comment=RT disabled=no distance=1 dst-address=0.0.0.0/0 gateway=77.37.178.1 pref-src=0.0.0.0 routing-table=RT scope=30 suppress-hw-offload=no target-scope=10  
 
 **#Добавляем mangle для маркировки пакетов ручной маршрутизации адресов**  
 /ip firewall mangle add action=mark-routing chain=prerouting dst-address-list=wg_list new-routing-mark=wg_mark  
+/ip firewall mangle add action=mark-routing chain=prerouting dst-address-list=RT new-routing-mark=RT  
 
 **#Добавляем шаблон для BGP туннеля. 65000 берётся случайно как идентификатор сети.**
 /routing bgp template add as=65000 disabled=no hold-time=4m input.filter=bgp_in_wg ignore-as-path-len=yes keepalive-time=1s multihop=yes name=antifilter_wg routing-table=main  
