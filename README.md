@@ -74,4 +74,8 @@ add as=65000 disabled=no hold-time=4m input.filter=bgp_in_wg \
 **Нужно создать руками маршрут и выбрать Distance 1.**  
 **Отсделить нужные хосты можно через консоль GoogleChrome/network**  
 
-/ip route add dst-address=//АДРЕС ВАШЕГО РЕСУРСА// gateway=//АДРЕС ШЛЮЗА//  
+/ip firewall address-list add address=pikabu.ru list=RT  
+# Будет выходить через шлюз провайдера  
+/ip firewall address-list add address=chat.openai.com list=wg_list  
+# Будет выходить через WG  
+
